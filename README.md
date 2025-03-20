@@ -1,6 +1,14 @@
 # Thermal Energy Storage (TES) Simulation: Water Pit
 
-This repository contains a Python simulation of a water pit thermal energy storage (TES) system. The project models the dynamic thermal behavior of a stratified water pit using a one-dimensional (1D) conduction model, dynamic water properties from CoolProp, and a truncated-pyramid geometry. In addition, an exergy analysis is performed to quantify the system’s thermodynamic performance.
+This repository contains a Python simulation of a **water pit thermal energy storage** (TES) system. The project models the dynamic thermal behavior of a **stratified water pit** using:
+
+- A **1D conduction** model,
+- **Dynamic** water properties from **CoolProp**,
+- A **truncated-pyramid geometry**,
+- **Stratified** charging/discharging logic,
+- And an **exergy analysis** to quantify thermodynamic performance.
+
+---
 
 ## Table of Contents
 
@@ -14,136 +22,149 @@ This repository contains a Python simulation of a water pit thermal energy stora
   - [Charging and Discharging Process](#charging-and-discharging-process)
 - [Exergy Analysis](#exergy-analysis)
 - [Results and Visualization](#results-and-visualization)
+- [Flowchart of the Simulation Process](#flowchart-of-the-simulation-process)
 - [Assumptions](#assumptions)
 - [How to Run the Simulation](#how-to-run-the-simulation)
 - [Repository Structure](#repository-structure)
 - [License](#license)
 
+---
+
 ## Introduction
 
-This project simulates the thermal behavior of a water pit TES system over one year (8760 hours). The simulation uses:
-- **Dynamic water properties** (density, specific heat, thermal conductivity) from CoolProp.
-- A **1D conduction model** to simulate inter-layer heat transfer.
-- **Stratified charging/discharging** to simulate the operation of the TES.
-- A **truncated-pyramid geometry** to represent the changing cross-sectional area and external surfaces of the water pit.
-- An **exergy analysis** to quantify the thermodynamic losses and overall performance.
+This project simulates the thermal behavior of a **water pit TES** system over a one-year period (8760 hours). It captures:
+
+- **1D conduction** between stratified layers,
+- **Heat losses** through side, bottom, and top surfaces,
+- **Charging** (hot inlet at 80 °C) and **discharging** (cold inlet at 40 °C),
+- **Exergy** calculation for each layer,
+- And a **3D animation** of the evolving temperature profile.
+
+---
 
 ## Geometry & Modeling
 
 ### Truncated-Pyramid Geometry
 
-The water pit is modeled as a truncated pyramid. This geometry is defined by:
-- A **bottom square side** length, \( L_{bot} \), and a **top square side** length, \( L_{top} \).
-- The pit is divided into \( n = 10 \) layers, each of height \( h_{\text{layer}} = \frac{h_{\text{total}}}{n} \).
+The water pit is modeled as a **truncated pyramid** with:
+- **Bottom square side** \(L_{\mathrm{bot}}\)  
+- **Top square side** \(L_{\mathrm{top}}\)  
+- **Height** \(h_{\mathrm{total}} = 16\,\text{m}\)
 
-For each layer \( i \):
-- **Bottom and top side lengths** are linearly interpolated between the overall bottom and top dimensions.
-- The **volume** of layer \( i \) is computed using the truncated pyramid formula:
-  
-  \[
-  V_i = \frac{h_{\text{layer}}}{3} \left( A_{1,i} + A_{2,i} + \sqrt{A_{1,i} A_{2,i}} \right)
-  \]
-  
-  where \( A_{1,i} = \text{(bottom side length)}^2 \) and \( A_{2,i} = \text{(top side length)}^2 \).
+It is subdivided into \(n = 10\) layers (each of height \(h_{\mathrm{layer}} = \frac{h_{\mathrm{total}}}{n}\)). For layer \(i\):
+- Bottom side length \(L_{\mathrm{bot},i}\) and top side length \(L_{\mathrm{top},i}\) are linearly interpolated,
+- The volume of layer \(i\) is computed by:
 
-- The **external surfaces** (bottom, top, and side areas) are computed to determine the heat losses from the system.
+$$
+V_i \;=\; \frac{h_{\mathrm{layer}}}{3} \Bigl( A_{1,i} + A_{2,i} + \sqrt{A_{1,i}\,A_{2,i}} \Bigr)
+$$
+
+where \(A_{1,i}\) and \(A_{2,i}\) are the squares of the bottom and top side lengths, respectively.
 
 ### Governing Equations and Formulas
 
-1. **Conduction Between Layers:**  
-   The 1D conduction between adjacent layers is modeled by Fourier's law:
-   
-   \[
-   Q_{\text{cond}} = k \, A_{\text{cond}} \frac{(T_{i+1} - T_i)}{\Delta x}
-   \]
-   
-   where \( k \) is the thermal conductivity (dynamically obtained from CoolProp), \( A_{\text{cond}} \) is the conduction area (taken as the top face of layer \( i \)), and \( \Delta x = h_{\text{layer}} \).
+1. **Conduction Between Layers**  
+   The 1D conduction between adjacent layers is modeled by Fourier’s law:
 
-2. **Heat Loss:**  
-   Heat losses occur from:
-   - **Side surfaces** using the corresponding side area and the difference between the layer temperature and soil temperature.
-   - **Bottom surface** (for the bottom layer).
-   - **Top surface** (for the top layer) using a projected area (to avoid excessive loss).
-   
-3. **Thermal Exergy:**  
+   $$
+   Q_{\text{cond}} \;=\; k \, A_{\text{cond}} \,\frac{\bigl(T_{i+1} - T_i\bigr)}{\Delta x}
+   $$
+
+   - \(k\) is the thermal conductivity (dynamically obtained from CoolProp),  
+   - \(A_{\text{cond}}\) is the conduction area (top area of the lower layer),  
+   - \(\Delta x = h_{\mathrm{layer}}\).
+
+2. **Heat Loss**  
+   - **Side surface** loss:
+
+     $$
+     Q_{\text{side}} \;=\; U_{\text{side}} \, A_{\text{side}} \,\bigl(T - T_{\text{soil}}\bigr)
+     $$
+
+   - **Bottom surface** loss (only for the bottom layer).
+   - **Top surface** loss (only for the top layer), using a projected area to avoid excessive loss:
+
+     $$
+     Q_{\text{top}} \;=\; U_{\text{top}} \, A_{\text{proj}} \,\bigl(T - T_{\text{amb}}\bigr)
+     $$
+
+3. **Thermal Exergy**  
    The exergy of each layer is calculated by:
-   
-   \[
-   Ex = m \, c_p \, \left[ (T_K - T_0) - T_0 \ln\left(\frac{T_K}{T_0}\right) \right]
-   \]
-   
+
+   $$
+   \text{Ex} \;=\; m\,c_p \,\Bigl[\,(T_K - T_0) \;-\; T_0 \,\ln\!\bigl(\tfrac{T_K}{T_0}\bigr)\Bigr]
+   $$
+
    where:
-   - \( m \) is the mass of water in the layer,
-   - \( c_p \) is the specific heat,
-   - \( T_K \) is the layer temperature in Kelvin,
-   - \( T_0 \) is the reference temperature in Kelvin (with \( T_{\text{ref}} = 25^\circ\text{C} \) used in this project).
+   - \(m\) is the mass of water in the layer,
+   - \(c_p\) is the specific heat,
+   - \(T_K\) is the layer temperature in Kelvin,
+   - \(T_0\) is the reference temperature (25°C in Kelvin, i.e. 298.15 K).
+
+---
 
 ## Simulation Details
 
 ### Dynamic Properties
 
-Water properties such as density (\( \rho \)), specific heat (\( c_p \)), and thermal conductivity (\( k \)) are dynamically retrieved from CoolProp for the average tank temperature at each time step.
+At each time step, the code retrieves water properties (\(\rho\), \(c_p\), \(k\)) from **CoolProp** at the **average tank temperature**.
 
 ### Heat Transfer and Conduction
 
-- **Inter-layer Conduction:**  
-  Modeled as a 1D explicit scheme using the dynamically updated properties.
-  
-- **Heat Losses:**  
-  Calculated separately for side, bottom (if applicable), and top surfaces.
-  
+1D conduction between layers is handled with an **explicit** scheme. Heat losses are computed separately for each layer’s external surfaces (side, bottom if \(i=0\), top if \(i=n-1\)).
+
 ### Charging and Discharging Process
 
-- **Stratified Charging:**  
-  Hot fluid (80 °C) enters at the top and flows downward.
-  
-- **Stratified Discharging:**  
-  Cold fluid (40 °C) enters at the bottom and flows upward.
+- **Charging**: Hot water (80 °C) enters the top layer, flows downward.
+- **Discharging**: Cold water (40 °C) enters the bottom layer, flows upward.
+
+---
 
 ## Exergy Analysis
 
-The simulation computes:
-- **Total thermal exergy stored** over time.
-- **Exergy destruction** based on the heat losses and the local temperature.
-- **Exergy efficiency**, defined as:
-  
-  \[
-  \eta_{\text{exergy}} = \frac{\text{Exergy In} - \text{Exergy Destruction}}{\text{Exergy In}} \times 100\%
-  \]
-  
-  where the exergy input during charging is estimated by multiplying the total heat input by a Carnot factor.
+Exergy is computed per layer using:
+
+$$
+\text{Ex} \;=\; m\,c_p \,\bigl[(T_K - T_0) - T_0 \ln(\tfrac{T_K}{T_0})\bigr]
+$$
+
+Exergy destruction is estimated by:
+
+$$
+\text{Ex}_{\text{destroyed}} \approx Q_{\text{loss}} \,\Bigl(1 - \frac{T_0}{T_{\text{layer}}}\Bigr)
+$$
+
+where \(Q_{\text{loss}}\) is the heat lost by the layer at temperature \(T_{\text{layer}} > T_0\).
+
+The overall **exergy efficiency** is defined as:
+
+$$
+\eta_{\text{exergy}} \;=\; \frac{\text{Exergy In} \;-\; \text{Exergy Destruction}}{\text{Exergy In}} \,\times 100\%
+$$
+
+---
 
 ## Results and Visualization
 
-The repository generates several plots:
-- **Temperature Evolution:** A graph showing the temperature in each layer over time.
-- **Exergy Over Time:** A graph showing the total thermal exergy stored in the TES.
-- **Exergy Destruction per Layer:** A bar chart summarizing the exergy destruction for each layer.
-- **3D Animation:** An animated 3D visualization of the TES temperature profile evolving over time. The animation uses a persistent colorbar with a fixed range of 40–80 °C.
+The simulation produces:
+- A **temperature vs. time** plot for each layer,
+- A **total exergy vs. time** plot,
+- A **bar chart** of exergy destruction per layer,
+- A **3D animation** showing the truncated-pyramid geometry, colored by temperature.
 
-Below is a sample 3D snapshot (or video) of the TES:
-  
-![3D TES Snapshot](images/3d_snapshot.png)  
-*Figure: 3D Visualization of TES Layers (each layer colored by temperature)*
+---
 
-## Assumptions
+## Flowchart of the Simulation Process
 
-- **Geometry:**  
-  The water pit is modeled as a truncated pyramid.
-- **Dynamic Properties:**  
-  Water properties are obtained from CoolProp at 1 atm.
-- **Heat Transfer:**  
-  A 1D conduction model is used; lateral conduction effects are neglected.
-- **Stratification:**  
-  The system is assumed to have well-defined layers with minimal mixing.
-- **Steady Pressure:**  
-  The simulation assumes a constant pressure of 101325 Pa.
-
-## How to Run the Simulation
-
-1. Ensure you have [Python](https://www.python.org/) and [Conda](https://docs.conda.io/en/latest/) installed.
-2. Install required packages:
-   ```bash
-   conda install numpy pandas matplotlib
-   pip install CoolProp matplotlib-venn
-
+```mermaid
+flowchart TD
+    A[Start] --> B[Initialize Geometry & Layers]
+    B --> C[Set Physical Parameters & Simulation Setup]
+    C --> D[Retrieve Dynamic Water Properties (CoolProp)]
+    D --> E[Compute 1D Conduction Between Layers]
+    E --> F[Calculate Heat Losses per Layer]
+    F --> G[Apply Stratified Charging/Discharging]
+    G --> H[Update Temperature Storage]
+    H --> I[Run Exergy Analysis]
+    I --> J[Generate Plots & 3D Animation]
+    J --> K[End]
