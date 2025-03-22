@@ -29,58 +29,56 @@ python water_pit_model.py
 ```
 
 ## System Architecture & Workflow
-# High-Level Schematic Diagram
-
-Below is a high-level schematic overview of the simulation flow using Mermaid syntax:
-
-```mermaid
 flowchart TD
     %% Initialization Block
     subgraph Initialization
-        A[Set Simulation Parameters (Time, Temperature, Geometry)]
-        B[Define Geometry & Layers (Truncated Pyramid)]
-        C[Compute Volumes & Surface Areas]
+        direction TB
+        params[Set Simulation Parameters - Time, Temperature, Geometry]
+        geometry[Define Geometry & Layers - Truncated Pyramid]
+        volumes[Compute Volumes & Surface Areas]
     end
 
     %% Simulation Block
     subgraph Simulation
-        D[Set Physical & Environmental Parameters (Heat Transfer Coefficients, Water Properties)]
-        E[Main Time-Stepping Loop]
-        F[Compute Conduction between Layers]
-        G[Calculate Surface Heat Losses]
-        H[Simulate Charging/Discharging Processes]
-        I[Update Temperature Profile]
+        direction TB
+        physical[Set Physical & Environmental Parameters - Heat Transfer Coefficients, Water Properties]
+        timeLoop[Main Time-Stepping Loop]
+        conduction[Compute Conduction between Layers]
+        heatLoss[Calculate Surface Heat Losses]
+        charging[Simulate Charging/Discharging Processes]
+        updateTemp[Update Temperature Profile]
     end
 
     %% Analysis Block
     subgraph Analysis
-        J[Perform Exergy Analysis (Exergy & Destruction Calculations)]
-        K[Aggregate Performance Metrics (Heat Input/Output, Efficiency)]
+        direction TB
+        exergy[Perform Exergy Analysis - Exergy & Destruction Calculations]
+        metrics[Aggregate Performance Metrics - Heat Input/Output, Efficiency]
     end
 
     %% Visualization Block
     subgraph Visualization
-        L[Generate Static Plots (Temperature Evolution, Exergy Over Time)]
-        M[Create 3D Animated Visualization (TES Temperature Profile)]
+        direction TB
+        plots[Generate Static Plots - Temperature Evolution, Exergy Over Time]
+        animation[Create 3D Animated Visualization - TES Temperature Profile]
     end
 
     %% Flow Connections
-    A --> B
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-    E --> G
-    E --> H
-    F --> I
-    G --> I
-    H --> I
-    I --> J
-    J --> K
-    K --> L
-    K --> M
-
-
+    params --> geometry
+    geometry --> volumes
+    volumes --> physical
+    physical --> timeLoop
+    timeLoop --> conduction
+    timeLoop --> heatLoss
+    timeLoop --> charging
+    conduction --> updateTemp
+    heatLoss --> updateTemp
+    charging --> updateTemp
+    updateTemp --> exergy
+    exergy --> metrics
+    metrics --> plots
+    metrics --> animation
+    
 ## How the Code Works
 
 The simulation models a **truncated-pyramid water pit thermal energy storage system** with stratified temperature layers, analyzing both thermal and exergy performance over an annual cycle.
