@@ -31,45 +31,51 @@ python water_pit_model.py
 ## System Architecture & Workflow
 
 ```
-┌───────────────────────────────────────────────┐
-│               Initialization                   │
-│  - Geometry definition                         │
-│  - Physical parameters                         │
-│  - Initial conditions                          │
-└───────────────┬───────────────────────────────┘
-                ▼
-┌───────────────────────────────────────────────┐
-│             Main Time Loop                     │
-│  ┌─────────────────────────────────────────┐  │
-│  │ For each time step (hour)               │  │
-│  │  ┌────────────────────────────────────┐ │  │
-│  │  │ Update water properties            │ │  │
-│  │  └──────────────┬─────────────────────┘ │  │
-│  │                 ▼                        │  │
-│  │  ┌────────────────────────────────────┐ │  │
-│  │  │ Calculate layer conduction         │ │  │
-│  │  └──────────────┬─────────────────────┘ │  │
-│  │                 ▼                        │  │
-│  │  ┌────────────────────────────────────┐ │  │
-│  │  │ Calculate heat losses              │ │  │
-│  │  └──────────────┬─────────────────────┘ │  │
-│  │                 ▼                        │  │
-│  │  ┌────────────────────────────────────┐ │  │
-│  │  │ Apply charging/discharging         │ │  │
-│  │  └──────────────┬─────────────────────┘ │  │
-│  │                 ▼                        │  │
-│  │  ┌────────────────────────────────────┐ │  │
-│  │  │ Update temperatures and exergy     │ │  │
-│  │  └────────────────────────────────────┘ │  │
-│  └─────────────────────────────────────────┘  │
-└───────────────┬───────────────────────────────┘
-                ▼
-┌───────────────────────────────────────────────┐
-│            Post-Processing                     │
-│  - Calculate performance metrics               │
-│  - Generate visualizations                     │
-│  - Create 3D animations                        │
-└───────────────────────────────────────────────┘
+flowchart TD
+    %% Initialization Block
+    subgraph Initialization
+        A[Set Simulation Parameters<br/>(Time, Temperature, Geometry)]
+        B[Define Geometry & Layers<br/>(Truncated Pyramid)]
+        C[Compute Volumes & Surface Areas]
+    end
+
+    %% Simulation Block
+    subgraph Simulation
+        D[Set Physical & Environmental Parameters<br/>(Heat Transfer Coefficients, Water Properties)]
+        E[Main Time-Stepping Loop]
+        F[Compute Conduction between Layers]
+        G[Calculate Surface Heat Losses]
+        H[Simulate Charging/Discharging Processes]
+        I[Update Temperature Profile]
+    end
+
+    %% Analysis Block
+    subgraph Analysis
+        J[Perform Exergy Analysis<br/>(Exergy & Destruction Calculations)]
+        K[Aggregate Performance Metrics<br/>(Heat Input/Output, Efficiency)]
+    end
+
+    %% Visualization Block
+    subgraph Visualization
+        L[Generate Static Plots<br/>(Temperature Evolution, Exergy Over Time)]
+        M[Create 3D Animated Visualization<br/>(TES Temperature Profile)]
+    end
+
+    %% Flow Connections
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    E --> G
+    E --> H
+    F --> I
+    G --> I
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    K --> M
 ```
 
 ## How the Code Works
