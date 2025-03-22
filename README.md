@@ -29,7 +29,8 @@ python water_pit_model.py
 ```
 
 ## System Architecture & Workflow
-![Flowchart Diagram](images/flowchart.png)
+![Flowchart Diagram](flowchart.png)
+
 
 ## How the Code Works
 
