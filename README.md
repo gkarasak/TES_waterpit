@@ -29,6 +29,7 @@ python water_pit_model.py
 ```
 
 ## System Architecture & Workflow
+```mermaid
 flowchart TD
     %% Initialization Block
     subgraph Initialization
@@ -49,20 +50,6 @@ flowchart TD
         updateTemp[Update Temperature Profile]
     end
 
-    %% Analysis Block
-    subgraph Analysis
-        direction TB
-        exergy[Perform Exergy Analysis - Exergy & Destruction Calculations]
-        metrics[Aggregate Performance Metrics - Heat Input/Output, Efficiency]
-    end
-
-    %% Visualization Block
-    subgraph Visualization
-        direction TB
-        plots[Generate Static Plots - Temperature Evolution, Exergy Over Time]
-        animation[Create 3D Animated Visualization - TES Temperature Profile]
-    end
-
     %% Flow Connections
     params --> geometry
     geometry --> volumes
@@ -74,10 +61,6 @@ flowchart TD
     conduction --> updateTemp
     heatLoss --> updateTemp
     charging --> updateTemp
-    updateTemp --> exergy
-    exergy --> metrics
-    metrics --> plots
-    metrics --> animation
     
 ## How the Code Works
 
