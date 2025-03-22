@@ -29,7 +29,7 @@ python water_pit_model.py
 ```
 
 ## System Architecture & Workflow
-```mermaid
+mermaid
 flowchart TD
     %% Initialization Block
     subgraph Initialization
