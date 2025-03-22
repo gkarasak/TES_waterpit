@@ -31,9 +31,6 @@ python water_pit_model.py
 ## System Architecture & Workflow
 # The Water Pit Simulation
 
-This repository contains a simulation for a water-based Thermal Energy Storage (TES) system modeled as a truncated pyramid. The code computes geometry, conduction, heat losses, charging/discharging, exergy analysis, and visualizes the results via static plots and a 3D animation.
-
-## High-Level Schematic Diagram
 # High-Level Schematic Diagram
 
 Below is a high-level schematic overview of the simulation flow using Mermaid syntax:
@@ -46,7 +43,6 @@ flowchart TD
         B[Define Geometry & Layers<br/>(Truncated Pyramid)]
         C[Compute Volumes & Surface Areas]
     end
-
     %% Simulation Block
     subgraph Simulation
         D[Set Physical & Environmental Parameters<br/>(Heat Transfer Coefficients, Water Properties)]
@@ -56,19 +52,16 @@ flowchart TD
         H[Simulate Charging/Discharging Processes]
         I[Update Temperature Profile]
     end
-
     %% Analysis Block
     subgraph Analysis
         J[Perform Exergy Analysis<br/>(Exergy & Destruction Calculations)]
         K[Aggregate Performance Metrics<br/>(Heat Input/Output, Efficiency)]
     end
-
     %% Visualization Block
     subgraph Visualization
         L[Generate Static Plots<br/>(Temperature Evolution, Exergy Over Time)]
         M[Create 3D Animated Visualization<br/>(TES Temperature Profile)]
     end
-
     %% Flow Connections
     A --> B
     B --> C
