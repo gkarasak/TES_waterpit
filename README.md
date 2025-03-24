@@ -84,7 +84,13 @@ Where:
 - $T_{soil}$ and $T_{ambient}$ are environmental temperatures
 
 ##### 2.3. Charging and Discharging
-The charging mass flow rate is $\dot{m}_{in} = \frac{Q_{in}}{c_p \cdot (T_{hot} - T_{out})}$ and discharging is $\dot{m}_{out} = \frac{Q_{out}}{c_p \cdot (T_{in} - T_{cold})}$.
+The charging process introduces hot water from the top:
+
+**ṁ_in = Q_in / [c_p · (T_hot - T_out)]**
+
+The discharging process extracts heat from the bottom:
+
+**ṁ_out = Q_out / [c_p · (T_in - T_cold)]**
 
 
 
