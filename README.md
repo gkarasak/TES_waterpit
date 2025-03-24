@@ -28,8 +28,12 @@ pip install numpy pandas matplotlib CoolProp matplotlib-venn
 python water_pit_model.py
 ```
 
+
 ## System Architecture & Workflow
-![Flowchart Diagram](images/flowchart.png)
+
+<img src="flowchart.png" alt="Flowchart Diagram" width="67%">
+
+
 
 ## How the Code Works
 
