@@ -28,24 +28,24 @@ This simulation models a truncated-pyramid shaped thermal energy storage system 
    !pip install CoolProp
 4. **Add the Simulation Code**
 
-- Click **+ Code** to create a new code cell.
-- Copy the entire TES model code into this cell.
-- Run the cell (click the play button or press Shift+Enter).
+   - Click **+ Code** to create a new code cell.
+   - Copy the entire TES model code into this cell.
+   - Run the cell (click the play button or press Shift+Enter).
 
 5. **View the Results**
 
 Scroll down to see:
-- Temperature evolution graphs
-- Exergy plots
-- Performance metrics table
-- 3D animation of the thermal storage system
+   - Temperature evolution graphs
+   - Exergy plots
+   - Performance metrics table
+   - 3D animation of the thermal storage system
 
 6. **Modifying Parameters**
 
 To change the simulation conditions, modify values in these sections:
-- Geometry parameters (Section 1)
-- Physical parameters (Section 2)
-- Charging/discharging settings (Section 2)
+   - Geometry parameters (Section 1)
+   - Physical parameters (Section 2)
+   - Charging/discharging settings (Section 2)
 
 ## System Architecture & Workflow
 
