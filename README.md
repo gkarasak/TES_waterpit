@@ -34,7 +34,7 @@ This simulation models a truncated-pyramid shaped thermal energy storage system 
 
 5. **View the Results**
 
-Scroll down to see:
+      Scroll down to see:
    - Temperature evolution graphs
    - Exergy plots
    - Performance metrics table
@@ -42,7 +42,7 @@ Scroll down to see:
 
 6. **Modifying Parameters**
 
-To change the simulation conditions, modify values in these sections:
+      To change the simulation conditions, modify values in these sections:
    - Geometry parameters (Section 1)
    - Physical parameters (Section 2)
    - Charging/discharging settings (Section 2)
