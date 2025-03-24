@@ -85,13 +85,10 @@ Where:
 
 ##### 2.3. Charging and Discharging
 The charging process introduces hot water from the top:
-
-ṁ₍ᵢₙ₎ = Qᵢₙ / [cₚ · (Tₕₒₜ - Tₒᵤₜ)]
-
-
+$$\dot{m}_{in} = \frac{Q_{in}}{c_p \cdot (T_{hot} - T_{out})}$$
 The discharging process extracts heat from the bottom:
+$$\dot{m}_{out} = \frac{Q_{out}}{c_p \cdot (T_{in} - T_{cold})}$$
 
-ṁ₍ₒᵤₜ₎ = Qₒᵤₜ / [cₚ · (Tᵢₙ - T꜀ₒₗ𝖽)]
 
 
 #### 3. Temperature Update
