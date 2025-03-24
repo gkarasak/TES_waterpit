@@ -1,32 +1,31 @@
-# Water Pit Thermal Energy Storage Model
+# Thermal Energy Storage (TES) Truncated-Pyramid Model
 
-## Overview
-This repository contains a comprehensive simulation framework for analyzing the thermal behavior of a truncated-pyramid water pit thermal energy storage (TES) system. The model simulates temperature distribution, heat transfer, and exergy analysis over time under charging and discharging cycles.
+## Description
+This simulation models a truncated-pyramid shaped thermal energy storage system with water as the storage medium. It performs exergy analysis and visualizes temperature evolution over time.
 
-The code:
-- Models a truncated-pyramid geometry with multiple thermal layers
-- Solves heat transfer equations using explicit numerical methods
-- Computes temperature profiles, thermal losses, and exergy metrics
-- Generates visualizations including 3D temperature animations
+## Running the Model in Google Colab
 
-## Quick Start Guide
+### Prerequisites
+- A Google account (for accessing Google Colab)
+- Internet connection
+- No software installation required
 
-### 1. Clone the Repository
-```sh
-git clone https://github.com/YOUR-USERNAME/water-pit-tes-model.git
-cd water-pit-tes-model
-```
+### Step-by-Step Instructions
 
-### 2. Set Up Python Environment
-Ensure you have Python 3.8+ and install the required dependencies:
-```sh
-pip install numpy pandas matplotlib CoolProp matplotlib-venn
-```
+1. **Open Google Colab**  
+   - Go to [Google Colab](https://colab.research.google.com/)  
+   - Sign in with your Google account if prompted
 
-### 3. Run the Simulation
-```sh
-python water_pit_model.py
-```
+2. **Create a New Notebook**  
+   - Click on **File → New notebook**  
+   - A blank notebook will open with an empty code cell
+
+3. **Install Required Packages**  
+   - Copy and paste the following code into the cell and run it (click the play button or press Shift+Enter):
+   
+   ```python
+   !pip install matplotlib-venn
+   !pip install CoolProp
 
 
 ## System Architecture & Workflow
