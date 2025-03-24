@@ -31,7 +31,7 @@ python water_pit_model.py
 
 ## System Architecture & Workflow
 
-<img src="flowchart_.png" alt="Flowchart Diagram" width="67%">
+<img src="flowchart_.png" alt="Flowchart Diagram" width="50%">
 
 
 
