@@ -220,5 +220,4 @@ This model can be used for:
 
 ## References
 - CoolProp for fluid properties: http://www.coolprop.org/
-- Thermal energy storage principles: Dincer, I., & Rosen, M. A. (2011). Thermal energy storage: systems and applications
-- Exergy analysis methodologies: Bejan, A. (2016). Advanced engineering thermodynamics
+
